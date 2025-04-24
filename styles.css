@@ -1,0 +1,158 @@
+body {
+    margin: 0;
+    background-color: #000;
+    overflow: hidden;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
+    color: white;
+}
+.LogoPNG {
+    width: 300px;
+    height: 250px;
+}
+.logo {
+    width: 600px;
+    height: 200px;
+}
+#game-container {
+    position: relative;
+    width: 95%;
+    height: 90%;
+    border: 2px solid whitesmoke;
+    margin-top: 20px;
+    overflow: hidden;
+}
+
+#score {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 20px;
+    color: whitesmoke;
+}
+
+#lives {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    color: whitesmoke;
+}
+
+#level {
+    position: absolute;
+    top: 40px;
+    left: 10px;
+    font-size: 20px;
+    color: whitesmoke;
+}
+
+#player {
+    position: absolute;
+    width: 50px;
+    height: 30px;
+    bottom: 20px;
+    left: 375px;
+    background-color: greenyellow;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url('SpaceShip/Ship.png'); /* Default neutral ship image */
+}
+
+.player-left {
+    background-image: url('SpaceShip/Left.png') !important; /* Ship leaning left */
+}
+
+.player-right {
+    background-image: url('SpaceShip/Right.png') !important; /* Ship leaning right */
+}
+
+.laser {
+    position: absolute;
+    width: 3px;
+    height: 15px;
+    background-color: #ff3333;
+}
+
+.player-laser {
+    background-color: #33ff33;
+}
+
+.alien {
+    position: absolute;
+    width: 40px;
+    height: 30px;
+    background-color: greenyellow;
+    text-align: center;
+    line-height: 30px;
+    font-size: 20px;
+}
+
+.alien-row-1 {
+    background-color: greenyellow;
+}
+
+.alien-row-2 {
+    background-color: greenyellow;
+}
+
+.alien-row-3 {
+    background-color: greenyellow;
+}
+
+.explosion {
+    position: absolute;
+    width: 40px;
+    height: 30px;
+    background-color: #ffff33;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 30px;
+    animation: explode 0.3s forwards;
+}
+
+@keyframes explode {
+    0% { transform: scale(1); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+/* Fixed to ensure only one screen is visible at a time */
+#game-over, #game-start {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 40px;
+    color: whitesmoke;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+#game-over {
+    display: none; /* Initially hide game over screen */
+}
+
+button {
+    background-color: whitesmoke;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #22cc22;
+}
