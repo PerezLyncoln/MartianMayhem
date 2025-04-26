@@ -55,12 +55,35 @@ body {
     width: 50px;
     height: 30px;
     bottom: 20px;
-    left: 375px;
+    left: calc(50% - 25px); /* Half of player width */
     background-color: greenyellow;
-    background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
     background-image: url('SpaceShip/Ship.png'); /* Default neutral ship image */
+}
+
+#player::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 75px;  /* Larger image width (150% of 50px) */
+    height: 60px; /* Larger image height (150% of 30px) */
+    background-image: url('SpaceShip/Ship.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: -1; /* Place behind the player element */
+}
+
+/* Update the directional classes to target the pseudo-element */
+#player.player-left::before {
+    background-image: url('SpaceShip/Left.png') !important;
+}
+
+#player.player-right::before {
+    background-image: url('SpaceShip/Right.png') !important;
 }
 
 .player-left {

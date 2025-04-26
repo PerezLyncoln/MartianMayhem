@@ -14,7 +14,7 @@ const logo = document.getElementById('logo');
 
 let gameRunning = false;
 let score = 0;
-let lives = 3;
+let lives = 10;
 let currentLevel = 1;
 let playerX = 375;
 let playerSpeed = 7;
@@ -24,7 +24,7 @@ let alienSpeed = 1; // Start slower
 let alienFireRate = 0.002; // Lower fire rate to start (easier)
 let keysPressed = {};
 let lastShotTime = 0;
-let shotCooldown = 10; // milliseconds
+let shotCooldown = 300; // milliseconds
 let gameLoopInterval;
 let aliens = [];
 let playerLasers = [];
@@ -58,10 +58,11 @@ function initGame() {
     clearInterval(gameLoopInterval);
     gameContainer.querySelectorAll('.alien, .laser, .explosion').forEach(el => el.remove());
 
-    document.getElementById('logo').style.display = 'none';
+    // // document.getElementById('logo').style.display = 'none';
+    // logo.style.display = "none";
     
     score = 0;
-    lives = 100;
+    lives = 10;
     currentLevel = 1;
     playerX = 375;
     alienDirection = 1;
@@ -76,6 +77,7 @@ function initGame() {
     scoreDisplay.textContent = `Score: ${score}`;
     livesDisplay.textContent = `Lives: ${lives}`;
     levelDisplay.textContent = `Level: ${currentLevel}`;
+    player.style.transform = '';
     playerX = (gameContainer.offsetWidth - player.offsetWidth) / 2;
     player.style.left = playerX + 'px';
     
