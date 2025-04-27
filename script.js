@@ -59,7 +59,7 @@ function initGame() {
     gameContainer.querySelectorAll('.alien, .laser, .explosion').forEach(el => el.remove());
 
     // // document.getElementById('logo').style.display = 'none';
-    // logo.style.display = "none";
+    logo.style.display = "none";
     
     score = 0;
     lives = 10;
@@ -135,7 +135,7 @@ function createAliens() {
         for (let col = 0; col < cols; col++) {
             const alien = document.createElement('div');
             alien.className = `alien alien-row-${row % 3 + 1}`;
-            alien.textContent = '👾';
+            // alien.textContent = '👾';
             
             const alienX = startX + col * (alienWidth + spacing);
             const alienY = row * (alienHeight + spacing) + 60;

@@ -56,7 +56,7 @@ body {
     height: 30px;
     bottom: 20px;
     left: calc(50% - 25px); /* Half of player width */
-    background-color: greenyellow;
+    /* background-color: greenyellow; */
     background-repeat: no-repeat;
     background-position: center;
     background-image: url('SpaceShip/Ship.png'); /* Default neutral ship image */
@@ -109,22 +109,40 @@ body {
     position: absolute;
     width: 40px;
     height: 30px;
-    background-color: greenyellow;
-    text-align: center;
+    /* background-color: greenyellow; */
+    /* background-image: url('Alien/Alien.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center; */
+    /* text-align: center;
     line-height: 30px;
-    font-size: 20px;
+    font-size: 20px; */
 }
 
-.alien-row-1 {
-    background-color: greenyellow;
+.alien-row-1::before {
+    background-image: url('Alien/AlienUFO.png');
 }
 
-.alien-row-2 {
-    background-color: greenyellow;
+.alien-row-2::before {
+    background-image: url('Alien/GreenAlien.png');
 }
 
-.alien-row-3 {
-    background-color: greenyellow;
+.alien-row-3::before {
+    background-image: url('Alien/AlienShip_VersionTwo.png');
+}
+
+.alien::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60px;  /* Larger width (150% of original) */
+    height: 50px; /* Larger height (150% of original) */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    z-index: -1;
 }
 
 .explosion {
