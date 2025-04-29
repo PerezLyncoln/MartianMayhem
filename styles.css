@@ -14,7 +14,7 @@ body {
     height: 250px;
 }
 .logo {
-    margin-top: 1.5em;
+    margin-top: 0.5%;
     width: 897px;
     height: 101px;
 }
@@ -23,8 +23,8 @@ body {
     width: 95%;
     height: 90%;
     border: 2px solid whitesmoke;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 0.5%;
+    margin-bottom: 0.5%;
     overflow: hidden;
 }
 
@@ -42,19 +42,20 @@ body {
     height: 100%;
     object-fit: cover;
 }
-
+.stat-container {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 0.5%;
+}
 #score-container {
-    position: absolute;
-    top: 10px;
-    left: 10px;
     display: flex;
     align-items: center;
-    z-index: 100;
 }
 
 #score-image {
-    height: 30px; /* Adjust as needed */
-    margin-right: 5px;
+    height: 40px;
 }
 
 #score-value {
@@ -64,26 +65,32 @@ body {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
-#lives {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    color: whitesmoke;
+#health-container {
+    display: flex;
+    align-items: center;
+}
+
+.heart {
+    width: 50px;
+    height: 50px;
+    margin-left: 3px;
+    background-image: url('Logos/HEART.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.heart-empty {
+    opacity: 0.4;
 }
 
 #level-container {
-    position: absolute;
-    top: 40px;
-    left: 10px;
     display: flex;
     align-items: center;
-    z-index: 100;
 }
 
 #level-image {
-    height: 30px; /* Adjust as needed */
-    margin-right: 5px;
+    height: 40px;
 }
 
 #level-value {
@@ -95,8 +102,8 @@ body {
 
 #player {
     position: absolute;
-    width: 50px;
-    height: 30px;
+    width: 40px;
+    height: 20px;
     bottom: 20px;
     left: calc(50% - 25px); /* Half of player width */
     /* background-color: greenyellow; */
@@ -111,8 +118,8 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 75px;  /* Larger image width (150% of 50px) */
-    height: 60px; /* Larger image height (150% of 30px) */
+    width: 55px;  /* Larger image width (150% of 50px) */
+    height: 40px; /* Larger image height (150% of 30px) */
     background-image: url('SpaceShip/Ship.png');
     background-size: contain;
     background-repeat: no-repeat;
@@ -150,8 +157,8 @@ body {
 
 .alien {
     position: absolute;
-    width: 40px;
-    height: 30px;
+    width: 30px;
+    height: 20px;
     /* background-color: greenyellow; */
     /* background-image: url('Alien/Alien.png');
     background-size: contain;
@@ -180,8 +187,8 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 60px;  /* Larger width (150% of original) */
-    height: 50px; /* Larger height (150% of original) */
+    width: 50px;  /* Larger width (150% of original) */
+    height: 35px; /* Larger height (150% of original) */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
@@ -257,4 +264,21 @@ button {
 
 button:hover {
     background-color: #22cc22;
+}
+
+@media (max-width: 1700px) {
+    .logo {
+        width: 40%;
+        height: 8%;
+    }
+    #score-image {
+        height: 20px;
+    }
+    .heart {
+        width: 30px;
+        height: 30px;
+    }
+    #level-image {
+        height: 20px;
+    }
 }

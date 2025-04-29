@@ -19,16 +19,6 @@
         <audio id="bgMusic" loop>
             <source src="Background Video and Audio/TestAudio.mp4" type="audio/mpeg">
         </audio>
-        <!-- Statistics -->
-        <div id="score-container">
-            <img id="score-image" src="Logos/SCORE.png" alt="Score">:
-            <div id="score-value">0</div>
-        </div>
-        <div id="lives">Lives: 3</div>
-        <div id="level-container">
-            <img id="level-image" src="Logos/LEVEL.png" alt="Level">:
-            <div id="level-value">1</div>
-        </div>
         <div id="player"></div>
         <!-- Start Prompt -->
         <div id="game-start">
@@ -49,6 +39,21 @@
             </div>
             <button id="restart-button">PLAY AGAIN</button>
         </div>
+    </div>
+    <!-- Statistics -->
+    <div class="stat-container">
+        <div id="score-container">
+            <img id="score-image" src="Logos/SCORE.png" alt="Score">:
+            <div id="score-value">0</div>
+        </div>
+
+        <div id="health-container"></div>
+        
+        <div id="level-container">
+            <img id="level-image" src="Logos/LEVEL.png" alt="Level">:
+            <div id="level-value">1</div>
+        </div>
+        
     </div>
 
     <script src="script.js"></script>

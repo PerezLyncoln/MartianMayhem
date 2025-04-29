@@ -2,7 +2,7 @@
 const gameContainer = document.getElementById('game-container');
 const player = document.getElementById('player');
 const scoreDisplay = document.getElementById('score');
-const livesDisplay = document.getElementById('lives');
+const healthContainer = document.getElementById('health-container');
 const levelDisplay = document.getElementById('level-value');
 const gameOverScreen = document.getElementById('game-over');
 const gameStartScreen = document.getElementById('game-start');
@@ -15,6 +15,7 @@ const logo = document.getElementById('logo');
 let gameRunning = false;
 let score = 0;
 let lives = 10;
+let maxLives = 10; //
 let currentLevel = 1;
 let playerX = 375;
 let playerSpeed = 7;
@@ -75,7 +76,7 @@ function initGame() {
     updatePlayerAppearance('neutral');
     
     document.getElementById('score-value').textContent = score;
-    livesDisplay.textContent = `Lives: ${lives}`;
+    updateHealthBar();
     document.getElementById('level-value').textContent = currentLevel;
     player.style.transform = '';
     playerX = (gameContainer.offsetWidth - player.offsetWidth) / 2;
@@ -95,6 +96,30 @@ function initGame() {
     // Start game loop
     gameRunning = true;
     gameLoopInterval = setInterval(gameLoop, 16); // ~60 FPS
+}
+
+function updateHealthBar() {
+    // Clear existing hearts
+    healthContainer.innerHTML = '';
+    
+    // Add hearts based on current lives
+    for (let i = 0; i < maxLives; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        
+        // If this heart position exceeds current lives, make it an empty heart
+        if (i >= lives) {
+            heart.classList.add('heart-empty');
+        }
+        
+        healthContainer.appendChild(heart);
+        
+        // Alternative emoji-based approach if you don't have heart images
+        // const heart = document.createElement('span');
+        // heart.className = 'emoji-heart';
+        // heart.textContent = i < lives ? '❤️' : '🖤';
+        // healthContainer.appendChild(heart);
+    }
 }
 
 // Function to update player appearance based on movement direction
@@ -123,9 +148,9 @@ function createAliens() {
     
     const rows = config.rows;
     const cols = config.cols;
-    const alienWidth = 40;
-    const alienHeight = 30;
-    const spacing = 20;
+    const alienWidth = 30;
+    const alienHeight = 20;
+    const spacing = 10;
     
     // Center the alien formation
     const formationWidth = cols * (alienWidth + spacing) - spacing;
@@ -359,7 +384,7 @@ function checkCollisions() {
             
             // Decrease lives
             lives--;
-            livesDisplay.textContent = `Lives: ${lives}`;
+            updateHealthBar(); // Update heart display when losing a life
             
             if (lives <= 0) {
                 gameOver();
