@@ -22,10 +22,10 @@ let playerSpeed = 7;
 let alienDirection = 1;
 let alienDownStep = 30;
 let alienSpeed = 1; // Start slower
-let alienFireRate = 0.002; // Lower fire rate to start (easier)
+let alienFireRate = 0.0025; // Lower fire rate to start (easier)
 let keysPressed = {};
 let lastShotTime = 0;
-let shotCooldown = 250; // milliseconds
+let shotCooldown = 10; // milliseconds
 let gameLoopInterval;
 let aliens = [];
 let playerLasers = [];
@@ -42,15 +42,15 @@ shipRightImg.src = 'ship-right.png';
 
 // Level configuration
 const levelConfig = [
-    { rows: 3, cols: 4, speed: 1, fireRate: 0.002 },     // Level 1
-    { rows: 3, cols: 5, speed: 1.2, fireRate: 0.0025 },  // Level 2
-    { rows: 3, cols: 6, speed: 1.5, fireRate: 0.003 },   // Level 3
-    { rows: 4, cols: 6, speed: 1.7, fireRate: 0.0035 },  // Level 4
-    { rows: 4, cols: 7, speed: 2, fireRate: 0.004 },     // Level 5
-    { rows: 4, cols: 8, speed: 2.2, fireRate: 0.0045 },  // Level 6
-    { rows: 5, cols: 8, speed: 2.5, fireRate: 0.005 },   // Level 7
-    { rows: 5, cols: 9, speed: 2.7, fireRate: 0.0055 },  // Level 8
-    { rows: 5, cols: 10, speed: 3, fireRate: 0.006 }     // Level 9 and beyond will maintain this difficulty
+    { rows: 3, cols: 4, speed: 1, fireRate: 0.0025 },     // Level 1
+    { rows: 3, cols: 5, speed: 1.05, fireRate: 0.0025 },  // Level 2
+    { rows: 3, cols: 6, speed: 1.1, fireRate: 0.0025 },   // Level 3
+    { rows: 4, cols: 6, speed: 1.15, fireRate: 0.0025 },  // Level 4
+    { rows: 4, cols: 7, speed: 1.20, fireRate: 0.0025 },     // Level 5
+    { rows: 4, cols: 8, speed: 1.25, fireRate: 0.002 },  // Level 6
+    { rows: 5, cols: 8, speed: 1.30, fireRate: 0.002 },   // Level 7
+    { rows: 5, cols: 9, speed: 1.35, fireRate: 0.002 },  // Level 8
+    { rows: 5, cols: 10, speed: 1.5, fireRate: 0.002 }     // Level 9 and beyond will maintain this difficulty
 ];
 
 // Initialize the game
