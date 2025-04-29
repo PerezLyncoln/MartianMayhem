@@ -25,7 +25,7 @@ let alienSpeed = 1; // Start slower
 let alienFireRate = 0.0025; // Lower fire rate to start (easier)
 let keysPressed = {};
 let lastShotTime = 0;
-let shotCooldown = 10; // milliseconds
+let shotCooldown = 230; // milliseconds
 let gameLoopInterval;
 let aliens = [];
 let playerLasers = [];
