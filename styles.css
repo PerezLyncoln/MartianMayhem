@@ -14,8 +14,9 @@ body {
     height: 250px;
 }
 .logo {
-    width: 600px;
-    height: 200px;
+    margin-top: 1.5em;
+    width: 897px;
+    height: 101px;
 }
 #game-container {
     position: relative;
@@ -23,15 +24,44 @@ body {
     height: 90%;
     border: 2px solid whitesmoke;
     margin-top: 20px;
+    margin-bottom: 20px;
     overflow: hidden;
 }
 
-#score {
+.video-background {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+  
+.video-background video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+#score-container {
     position: absolute;
     top: 10px;
     left: 10px;
-    font-size: 20px;
-    color: whitesmoke;
+    display: flex;
+    align-items: center;
+    z-index: 100;
+}
+
+#score-image {
+    height: 30px; /* Adjust as needed */
+    margin-right: 5px;
+}
+
+#score-value {
+    color: white; /* Or your preferred color */
+    font-family: 'Arial', sans-serif; /* Or your game's font */
+    font-size: 24px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 #lives {
@@ -42,12 +72,25 @@ body {
     color: whitesmoke;
 }
 
-#level {
+#level-container {
     position: absolute;
     top: 40px;
     left: 10px;
-    font-size: 20px;
-    color: whitesmoke;
+    display: flex;
+    align-items: center;
+    z-index: 100;
+}
+
+#level-image {
+    height: 30px; /* Adjust as needed */
+    margin-right: 5px;
+}
+
+#level-value {
+    color: white;
+    font-family: 'Arial', sans-serif;
+    font-size: 24px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 #player {
@@ -182,6 +225,24 @@ body {
 
 #game-over {
     display: none; /* Initially hide game over screen */
+}
+
+.final-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.final-image {
+    height: 45px;
+    margin-right: 10px;
+}
+
+.final-value {
+    color: white;
+    font-size: 32px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 button {

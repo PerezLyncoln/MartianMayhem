@@ -3,11 +3,11 @@ const gameContainer = document.getElementById('game-container');
 const player = document.getElementById('player');
 const scoreDisplay = document.getElementById('score');
 const livesDisplay = document.getElementById('lives');
-const levelDisplay = document.getElementById('level');
+const levelDisplay = document.getElementById('level-value');
 const gameOverScreen = document.getElementById('game-over');
 const gameStartScreen = document.getElementById('game-start');
-const finalScoreDisplay = document.getElementById('final-score');
-const finalLevelDisplay = document.getElementById('final-level');
+const finalScoreDisplay = document.getElementById('final-score-value');
+const finalLevelDisplay = document.getElementById('final-level-value');
 const startButton = document.getElementById('start-button');
 const restartButton = document.getElementById('restart-button');
 const logo = document.getElementById('logo');
@@ -24,7 +24,7 @@ let alienSpeed = 1; // Start slower
 let alienFireRate = 0.002; // Lower fire rate to start (easier)
 let keysPressed = {};
 let lastShotTime = 0;
-let shotCooldown = 300; // milliseconds
+let shotCooldown = 250; // milliseconds
 let gameLoopInterval;
 let aliens = [];
 let playerLasers = [];
@@ -59,7 +59,7 @@ function initGame() {
     gameContainer.querySelectorAll('.alien, .laser, .explosion').forEach(el => el.remove());
 
     // // document.getElementById('logo').style.display = 'none';
-    logo.style.display = "none";
+    // logo.style.display = "none";
     
     score = 0;
     lives = 10;
@@ -74,9 +74,9 @@ function initGame() {
     // Reset player appearance to neutral
     updatePlayerAppearance('neutral');
     
-    scoreDisplay.textContent = `Score: ${score}`;
+    document.getElementById('score-value').textContent = score;
     livesDisplay.textContent = `Lives: ${lives}`;
-    levelDisplay.textContent = `Level: ${currentLevel}`;
+    document.getElementById('level-value').textContent = currentLevel;
     player.style.transform = '';
     playerX = (gameContainer.offsetWidth - player.offsetWidth) / 2;
     player.style.left = playerX + 'px';
@@ -333,7 +333,7 @@ function checkCollisions() {
                 
                 // Increase score
                 score += 10;
-                scoreDisplay.textContent = `Score: ${score}`;
+                document.getElementById('score-value').textContent = score;
                 
                 break;
             }
@@ -411,7 +411,7 @@ function nextLevel() {
     alienFireRate = config.fireRate;
     
     // Update level display
-    levelDisplay.textContent = `Level: ${currentLevel}`;
+    document.getElementById('level-value').textContent = currentLevel;
     
     // Create new aliens for this level
     createAliens();
@@ -431,10 +431,24 @@ function nextLevel() {
 function gameOver() {
     gameRunning = false;
     clearInterval(gameLoopInterval);
-    finalScoreDisplay.textContent = `Score: ${score}`;
-    finalLevelDisplay.textContent = `Level: ${currentLevel}`;
+    document.getElementById('final-score-value').textContent = score;
+    document.getElementById('final-level-value').textContent = currentLevel;
     gameOverScreen.style.display = 'block';
 }
+
+// Get the audio element
+const bgMusic = document.getElementById("bgMusic");
+
+// Start music when the game starts
+document.getElementById("start-button").addEventListener("click", () => {
+  bgMusic.play().catch(e => console.log("Autoplay blocked:", e)); // Handle browser autoplay restrictions
+});
+
+// Pause music on game over (optional)
+document.getElementById("restart-button").addEventListener("click", () => {
+  bgMusic.currentTime = 0; // Rewind to start
+  bgMusic.play();
+});
 
 // Event listeners
 document.addEventListener('keydown', (e) => {

@@ -7,21 +7,46 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <img src="Something/MartianLogo.png" alt="Logo" class="logo" id="logo">
+    <img src="Logos/MARTIAN-MAYHEM_V2.png" alt="Logo" class="logo" id="logo">
     <div id="game-container">
-        <div id="score">Score: 0</div>
+        <!-- Background -->
+        <div class="video-background">
+            <video autoplay loop muted playsinline>
+              <source src="Background_Video_and_Audio/SeamlessSpace.mp4" type="video/mp4">
+            </video>
+        </div>
+        <!-- Audio -->
+        <audio id="bgMusic" loop>
+            <source src="Background_Video_and_Audio/TestAudio.mp4" type="audio/mpeg">
+        </audio>
+        <!-- Statistics -->
+        <div id="score-container">
+            <img id="score-image" src="Logos/SCORE.png" alt="Score">:
+            <div id="score-value">0</div>
+        </div>
         <div id="lives">Lives: 3</div>
-        <div id="level">Level: 1</div>
+        <div id="level-container">
+            <img id="level-image" src="Logos/LEVEL.png" alt="Level">:
+            <div id="level-value">1</div>
+        </div>
         <div id="player"></div>
+        <!-- Start Prompt -->
         <div id="game-start">
             <p> MARTIAN MAYHEM </p>
             <p>Use ← → to move, SPACE to fire</p>
             <button id="start-button">START GAME</button>
         </div>
+        <!-- Game Over Prompt -->
         <div id="game-over">
-            <p>GAME OVER</p>
-            <p id="final-score">Score: 0</p>
-            <p id="final-level">Level: 1</p>
+            <img src="Logos/GAME-OVER.png" alt="GAME OVER">
+            <div class="final-container">
+                <img class="final-image" src="Logos/SCORE.png" alt="Score">
+                <div id="final-score-value" class="final-value">0</div>
+            </div>
+            <div class="final-container">
+                <img class="final-image" src="Logos/LEVEL.png" alt="Level">
+                <div id="final-level-value" class="final-value">1</div>
+            </div>
             <button id="restart-button">PLAY AGAIN</button>
         </div>
     </div>
