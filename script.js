@@ -1,7 +1,7 @@
 // Game variables
 const gameContainer = document.getElementById('game-container');
 const player = document.getElementById('player');
-const scoreDisplay = document.getElementById('score');
+const scoreDisplay = document.getElementById('score-value');
 const healthContainer = document.getElementById('health-container');
 const levelDisplay = document.getElementById('level-value');
 const gameOverScreen = document.getElementById('game-over');
@@ -11,11 +11,19 @@ const finalLevelDisplay = document.getElementById('final-level-value');
 const startButton = document.getElementById('start-button');
 const restartButton = document.getElementById('restart-button');
 const logo = document.getElementById('logo');
+const bgMusic = document.getElementById("bgMusic");
+const viewScoresButton = document.getElementById('view-scores-button');
+const leaderboardOverlay = document.getElementById('leaderboard-overlay');
+const leaderboardList = document.getElementById('leaderboard-list');
+const saveScoreForm = document.getElementById('save-score-form');
+const playerNameInput = document.getElementById('player-name');
+const saveScoreButton = document.getElementById('save-score-button');
+const closeLeaderboardButton = document.getElementById('close-leaderboard-button');
 
 let gameRunning = false;
 let score = 0;
 let lives = 10;
-let maxLives = 10; //
+let maxLives = 10;
 let currentLevel = 1;
 let playerX = 375;
 let playerSpeed = 7;
@@ -31,14 +39,8 @@ let aliens = [];
 let playerLasers = [];
 let alienLasers = [];
 let playerLastDirection = 'neutral'; // Track player's last movement direction
-
-// Preload ship images
-const shipNeutralImg = new Image();
-const shipLeftImg = new Image();
-const shipRightImg = new Image();
-shipNeutralImg.src = 'ship-neutral.png';
-shipLeftImg.src = 'ship-left.png';
-shipRightImg.src = 'ship-right.png';
+let currentScoreSaved = false;
+let leaderboardScores = [];
 
 // Level configuration
 const levelConfig = [
@@ -46,21 +48,98 @@ const levelConfig = [
     { rows: 3, cols: 5, speed: 1.05, fireRate: 0.0025 },  // Level 2
     { rows: 3, cols: 6, speed: 1.1, fireRate: 0.0025 },   // Level 3
     { rows: 4, cols: 6, speed: 1.15, fireRate: 0.0025 },  // Level 4
-    { rows: 4, cols: 7, speed: 1.20, fireRate: 0.0025 },     // Level 5
-    { rows: 4, cols: 8, speed: 1.25, fireRate: 0.002 },  // Level 6
+    { rows: 4, cols: 7, speed: 1.20, fireRate: 0.0025 },  // Level 5
+    { rows: 4, cols: 8, speed: 1.25, fireRate: 0.002 },   // Level 6
     { rows: 5, cols: 8, speed: 1.30, fireRate: 0.002 },   // Level 7
-    { rows: 5, cols: 9, speed: 1.35, fireRate: 0.002 },  // Level 8
-    { rows: 5, cols: 10, speed: 1.5, fireRate: 0.002 }     // Level 9 and beyond will maintain this difficulty
+    { rows: 5, cols: 9, speed: 1.35, fireRate: 0.002 },   // Level 8
+    { rows: 5, cols: 10, speed: 1.5, fireRate: 0.002 }    // Level 9 and beyond will maintain this difficulty
 ];
+
+// Function to update health bar
+function updateHealthBar() {
+    // Clear existing hearts
+    healthContainer.innerHTML = '';
+    
+    // Add hearts based on current lives
+    for (let i = 0; i < maxLives; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'heart';
+        
+        // If this heart position exceeds current lives, make it an empty heart
+        if (i >= lives) {
+            heart.classList.add('heart-empty');
+        }
+        
+        healthContainer.appendChild(heart);
+    }
+}
+
+// Function to update player appearance based on movement direction
+function updatePlayerAppearance(direction) {
+    // Only update if direction has changed
+    if (playerLastDirection !== direction) {
+        playerLastDirection = direction;
+        
+        // Remove all direction classes
+        player.classList.remove('player-left', 'player-right');
+        
+        // Add appropriate class based on direction
+        if (direction === 'left') {
+            player.classList.add('player-left');
+        } else if (direction === 'right') {
+            player.classList.add('player-right');
+        }
+        // If neutral, no class is needed as the default style applies
+    }
+}
+
+function createAliens() {
+    // Clear any existing aliens
+    gameContainer.querySelectorAll('.alien').forEach(el => el.remove());
+    aliens = [];
+    
+    // Get config for current level, cap at the last config if level exceeds config array
+    const configIndex = Math.min(currentLevel - 1, levelConfig.length - 1);
+    const config = levelConfig[configIndex];
+    
+    const rows = config.rows;
+    const cols = config.cols;
+    const alienWidth = 30;
+    const alienHeight = 20;
+    const spacing = 10;
+    
+    // Center the alien formation
+    const formationWidth = cols * (alienWidth + spacing) - spacing;
+    const startX = (gameContainer.offsetWidth - formationWidth) / 2;
+    
+    for (let row = 0; row < rows; row++) {
+        for (let col = 0; col < cols; col++) {
+            const alien = document.createElement('div');
+            alien.className = `alien alien-row-${row % 3 + 1}`;
+            
+            const alienX = startX + col * (alienWidth + spacing);
+            const alienY = row * (alienHeight + spacing) + 60;
+            
+            alien.style.left = alienX + 'px';
+            alien.style.top = alienY + 'px';
+            gameContainer.appendChild(alien);
+            
+            aliens.push({
+                element: alien,
+                x: alienX,
+                y: alienY,
+                width: alienWidth,
+                height: alienHeight
+            });
+        }
+    }
+}
 
 // Initialize the game
 function initGame() {
     // Reset game state
     clearInterval(gameLoopInterval);
     gameContainer.querySelectorAll('.alien, .laser, .explosion').forEach(el => el.remove());
-
-    // // document.getElementById('logo').style.display = 'none';
-    // logo.style.display = "none";
     
     score = 0;
     lives = 10;
@@ -71,6 +150,7 @@ function initGame() {
     alienLasers = [];
     aliens = [];
     playerLastDirection = 'neutral';
+    currentScoreSaved = false;
     
     // Reset player appearance to neutral
     updatePlayerAppearance('neutral');
@@ -96,88 +176,6 @@ function initGame() {
     // Start game loop
     gameRunning = true;
     gameLoopInterval = setInterval(gameLoop, 16); // ~60 FPS
-}
-
-function updateHealthBar() {
-    // Clear existing hearts
-    healthContainer.innerHTML = '';
-    
-    // Add hearts based on current lives
-    for (let i = 0; i < maxLives; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'heart';
-        
-        // If this heart position exceeds current lives, make it an empty heart
-        if (i >= lives) {
-            heart.classList.add('heart-empty');
-        }
-        
-        healthContainer.appendChild(heart);
-        
-        // Alternative emoji-based approach if you don't have heart images
-        // const heart = document.createElement('span');
-        // heart.className = 'emoji-heart';
-        // heart.textContent = i < lives ? '❤️' : '🖤';
-        // healthContainer.appendChild(heart);
-    }
-}
-
-// Function to update player appearance based on movement direction
-function updatePlayerAppearance(direction) {
-    // Only update if direction has changed
-    if (playerLastDirection !== direction) {
-        playerLastDirection = direction;
-        
-        // Remove all direction classes
-        player.classList.remove('player-left', 'player-right');
-        
-        // Add appropriate class based on direction
-        if (direction === 'left') {
-            player.classList.add('player-left');
-        } else if (direction === 'right') {
-            player.classList.add('player-right');
-        }
-        // If neutral, no class is needed as the default style applies
-    }
-}
-
-function createAliens() {
-    // Get config for current level, cap at the last config if level exceeds config array
-    const configIndex = Math.min(currentLevel - 1, levelConfig.length - 1);
-    const config = levelConfig[configIndex];
-    
-    const rows = config.rows;
-    const cols = config.cols;
-    const alienWidth = 30;
-    const alienHeight = 20;
-    const spacing = 10;
-    
-    // Center the alien formation
-    const formationWidth = cols * (alienWidth + spacing) - spacing;
-    const startX = (gameContainer.offsetWidth - formationWidth) / 2;
-    
-    for (let row = 0; row < rows; row++) {
-        for (let col = 0; col < cols; col++) {
-            const alien = document.createElement('div');
-            alien.className = `alien alien-row-${row % 3 + 1}`;
-            // alien.textContent = '👾';
-            
-            const alienX = startX + col * (alienWidth + spacing);
-            const alienY = row * (alienHeight + spacing) + 60;
-            
-            alien.style.left = alienX + 'px';
-            alien.style.top = alienY + 'px';
-            gameContainer.appendChild(alien);
-            
-            aliens.push({
-                element: alien,
-                x: alienX,
-                y: alienY,
-                width: alienWidth,
-                height: alienHeight
-            });
-        }
-    }
 }
 
 // Game loop
@@ -456,24 +454,102 @@ function nextLevel() {
 function gameOver() {
     gameRunning = false;
     clearInterval(gameLoopInterval);
+    currentScoreSaved = false;
     document.getElementById('final-score-value').textContent = score;
     document.getElementById('final-level-value').textContent = currentLevel;
     gameOverScreen.style.display = 'block';
 }
 
-// Get the audio element
-const bgMusic = document.getElementById("bgMusic");
+// Function to load scores from localStorage
+function loadScores() {
+    const savedScores = localStorage.getItem('martianMayhemScores');
+    if (savedScores) {
+        leaderboardScores = JSON.parse(savedScores);
+    } else {
+        leaderboardScores = [];
+    }
+}
 
-// Start music when the game starts
-document.getElementById("start-button").addEventListener("click", () => {
-  bgMusic.play().catch(e => console.log("Autoplay blocked:", e)); // Handle browser autoplay restrictions
-});
+// Function to save scores to localStorage
+function saveScores() {
+    localStorage.setItem('martianMayhemScores', JSON.stringify(leaderboardScores));
+}
 
-// Pause music on game over (optional)
-document.getElementById("restart-button").addEventListener("click", () => {
-  bgMusic.currentTime = 0; // Rewind to start
-  bgMusic.play();
-});
+// Function to display the leaderboard
+function displayLeaderboard() {
+    loadScores();
+    
+    // Sort scores from highest to lowest
+    leaderboardScores.sort((a, b) => b.score - a.score);
+    
+    // Create leaderboard HTML
+    leaderboardList.innerHTML = '';
+    
+    if (leaderboardScores.length === 0) {
+        leaderboardList.innerHTML = '<p>No scores yet!</p>';
+    } else {
+        // Create table for scores
+        const table = document.createElement('table');
+        table.className = 'leaderboard-table';
+        
+        // Add header row
+        const headerRow = document.createElement('tr');
+        headerRow.innerHTML = `
+            <th>Rank</th>
+            <th>Name</th>
+            <th>Score</th>
+            <th>Level</th>
+        `;
+        table.appendChild(headerRow);
+        
+        // Add top 10 scores (or less if fewer exist)
+        const scoresToShow = Math.min(leaderboardScores.length, 10);
+        for (let i = 0; i < scoresToShow; i++) {
+            const score = leaderboardScores[i];
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${i + 1}</td>
+                <td>${score.name}</td>
+                <td>${score.score}</td>
+                <td>${score.level}</td>
+            `;
+            table.appendChild(row);
+        }
+        
+        leaderboardList.appendChild(table);
+    }
+    
+    // Show the save score form if the current score isn't saved yet
+    if (!currentScoreSaved && score > 0) {
+        saveScoreForm.style.display = 'block';
+    } else {
+        saveScoreForm.style.display = 'none';
+    }
+}
+
+// Function to save the current score
+function saveCurrentScore() {
+    const playerName = playerNameInput.value.trim() || 'Anonymous';
+    
+    leaderboardScores.push({
+        name: playerName,
+        score: score,
+        level: currentLevel,
+        date: new Date().toISOString()
+    });
+    
+    // Keep only top 100 scores
+    leaderboardScores.sort((a, b) => b.score - a.score);
+    if (leaderboardScores.length > 100) {
+        leaderboardScores = leaderboardScores.slice(0, 100);
+    }
+    
+    saveScores();
+    currentScoreSaved = true;
+    
+    // Refresh the leaderboard display
+    displayLeaderboard();
+}
 
 // Event listeners
 document.addEventListener('keydown', (e) => {
@@ -503,8 +579,65 @@ document.addEventListener('keyup', (e) => {
     }
 });
 
-startButton.addEventListener('click', initGame);
-restartButton.addEventListener('click', initGame);
+// Audio event listeners
+startButton.addEventListener('click', () => {
+    initGame();
+    bgMusic.play().catch(e => console.log("Autoplay blocked:", e)); // Handle browser autoplay restrictions
+});
 
-// Show start screen
-gameStartScreen.style.display = 'block';
+restartButton.addEventListener('click', () => {
+    initGame();
+    bgMusic.currentTime = 0; // Rewind to start
+    bgMusic.play();
+});
+
+// Initial setup - this will run when the page loads
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize player position
+    playerX = (gameContainer.offsetWidth - player.offsetWidth) / 2;
+    player.style.left = playerX + 'px';
+    
+    // Initialize heart bar
+    updateHealthBar();
+    
+    // Create aliens but don't start moving them (they will be visible though)
+    createAliens();
+    
+    // Make sure game start screen is visible
+    gameStartScreen.style.display = 'flex';
+    gameOverScreen.style.display = 'none';
+});
+
+// Show start screen (backup in case DOMContentLoaded doesn't fire)
+if (document.readyState === 'complete') {
+    // Initialize player position
+    playerX = (gameContainer.offsetWidth - player.offsetWidth) / 2;
+    player.style.left = playerX + 'px';
+    
+    // Initialize heart bar
+    updateHealthBar();
+    
+    // Create aliens but don't start moving them (they will be visible though)
+    createAliens();
+    
+    // Make sure game start screen is visible
+    gameStartScreen.style.display = 'flex';
+    gameOverScreen.style.display = 'none';
+}
+
+// View scores button click
+viewScoresButton.addEventListener('click', () => {
+    displayLeaderboard();
+    leaderboardOverlay.style.display = 'flex';
+});
+
+// Save score button click
+saveScoreButton.addEventListener('click', () => {
+    saveCurrentScore();
+    saveScoreForm.style.display = 'none';
+});
+
+// Close leaderboard button click
+closeLeaderboardButton.addEventListener('click', () => {
+    leaderboardOverlay.style.display = 'none';
+});

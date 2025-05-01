@@ -38,8 +38,22 @@
                 <div id="final-level-value" class="final-value">1</div>
             </div>
             <button id="restart-button">PLAY AGAIN</button>
+            <button id="view-scores-button">VIEW SCORES</button>
         </div>
     </div>
+    
+    <div id="leaderboard-overlay" style="display: none;">
+        <div id="leaderboard-container">
+            <h2>HIGH SCORES</h2>
+            <div id="leaderboard-list"></div>
+            <div id="save-score-form" style="display: none;">
+                <input type="text" id="player-name" placeholder="Enter your name" maxlength="15">
+                <button id="save-score-button">SAVE SCORE</button>
+            </div>
+            <button id="close-leaderboard-button">CLOSE</button>
+        </div>
+    </div>
+    
     <!-- Statistics -->
     <div class="stat-container">
         <div id="score-container">

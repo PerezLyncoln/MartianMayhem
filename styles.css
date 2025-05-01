@@ -282,3 +282,144 @@ button:hover {
         height: 20px;
     }
 }
+
+/* Add these CSS styles to your stylesheet */
+
+/* Leaderboard overlay styles */
+#leaderboard-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 200;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#leaderboard-container {
+    background-color: #111;
+    border: 2px solid whitesmoke;
+    width: 80%;
+    max-width: 800px;
+    max-height: 80vh;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: white;
+    overflow-y: auto;
+}
+
+#leaderboard-container h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    color: #33ff33;
+    text-shadow: 0 0 8px #33ff33;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.leaderboard-table th, 
+.leaderboard-table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #333;
+}
+
+.leaderboard-table th {
+    background-color: #333;
+    color: #33ff33;
+}
+
+.leaderboard-table tr:nth-child(even) {
+    background-color: rgba(51, 51, 51, 0.3);
+}
+
+/* Save score form styles */
+#save-score-form {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+#player-name {
+    background-color: #222;
+    border: 2px solid #33ff33;
+    color: white;
+    padding: 10px;
+    font-size: 18px;
+    width: 80%;
+    max-width: 300px;
+    text-align: center;
+}
+
+#save-score-button {
+    background-color: #33ff33;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#save-score-button:hover {
+    background-color: white;
+    box-shadow: 0 0 10px #33ff33;
+}
+
+#close-leaderboard-button {
+    margin-top: 15px;
+    background-color: whitesmoke;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#close-leaderboard-button:hover {
+    background-color: #ff3333;
+}
+
+/* Style the view scores button in the game over screen */
+#view-scores-button {
+    background-color: #3333ff;
+    color: white;
+    margin-top: 10px;
+    transition: all 0.3s;
+}
+
+#view-scores-button:hover {
+    background-color: #5555ff;
+    box-shadow: 0 0 10px #3333ff;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    #leaderboard-container {
+        width: 90%;
+        padding: 10px;
+    }
+    
+    .leaderboard-table th, 
+    .leaderboard-table td {
+        padding: 5px;
+        font-size: 14px;
+    }
+    
+    #leaderboard-container h2 {
+        font-size: 24px;
+    }
+}
